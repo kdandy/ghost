@@ -1,0 +1,298 @@
+:root {
+  --cursor-x-1: 0;
+  --cursor-y-1: 0;
+  
+  --head-rotation: 0deg;
+  --face-width: 22vmin;
+  --face-height: 25vmin;
+  --face-radius: 90% 74% 63% 86% / 64% 66% 109% 70%;
+  --face-highlight-radius: 69% 78% 65% 62% / 85% 69% 67% 107%;
+
+  --right-eye-top: 34%;
+  --right-eye-left: 68%;
+  --right-eye-width: 20%;
+  --right-eye-height: 21%;
+  --right-eye-radius: 49% 43% 55% 46% / 55% 53% 53% 56%;
+
+  --left-eye-top: 32%;
+  --left-eye-left: 15%;
+  --left-eye-width: 15%;
+  --left-eye-height: 15%;
+  --left-eye-radius: 58% 42% 42% 46% / 48% 41% 51% 46%;
+
+  --nose-top: 30.5%;
+  --nose-left: 42.5%;
+  --nose-width: 9%;
+  --nose-height: 7%;
+  --nose-opacity: 1;
+  --nose-radius: 50% / 40%;
+
+  --mouth-top: 79%;
+  --mouth-left: 43.5%;
+  --mouth-width: 13%;
+  --mouth-height: 6%;
+  --mouth-radius: 48% 46% 59% 48% / 54% 43% 40% 41%;
+
+  --body-width: calc(var(--face-width) * .9);
+  --body-height: calc(var(--face-height) * 1.2);
+  --body-highlight-radius: 85% 63% 99% 93% / 69% 76% 66% 110%;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background: linear-gradient(
+    120deg,
+    #689a77,
+    #586d5e 50%,
+    #586d5e
+  );
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff7db;
+  mix-blend-mode: overlay;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.panel-1 {
+  display: grid;
+  place-items: center;
+  padding: 5vmin 0;
+  height: 60vh;
+}
+
+.panel-2 {
+  
+}
+
+.refresh {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  padding: .25em .5em;
+  font-size: 18px;
+  font-family: "Operator Mono", menlo, monaco, monospace;
+  border: 2px solid #333;
+  background: transparent;
+  color: #333;
+  cursor: pointer;
+}
+
+.refresh:hover {
+  background: #333;
+  color: #fff;
+}
+
+.face {
+  position: relative;
+  z-index: 1;
+  width: var(--face-width);
+  height: var(--face-height);
+  background: #cfcfcf;
+  overflow: hidden;
+  border-radius: var(--face-radius);
+  cursor: pointer;
+  box-shadow: 0 0 5vmin #fff7db55;
+  perspective: 30vmin;
+  transform: rotate(var(--head-rotation));
+  transition:
+    top .5s,
+    left .5s,
+    width .5s,
+    height .5s,
+    border-radius .5s;
+}
+
+.kodama.animating .face {
+  -webkit-animation: tiktiktik 4s 1;
+          animation: tiktiktik 4s 1;
+}
+
+.face-highlight {
+  width: 110%;
+  height: 110%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #ddd;
+  border-radius: var(--face-highlight-radius);
+  transform:
+    translate(
+      calc(-68% + var(--cursor-x-1) * 6%),
+      calc(-63% + var(--cursor-y-1) * 6%)
+    );
+  transition:
+    top .5s,
+    left .5s,
+    width .5s,
+    height .5s,
+    border-radius .5s;
+}
+
+#body-image {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.body {
+  position: relative;
+  top: -5vmin;
+  width: var(--body-width);
+  height: var(--body-height);
+  -webkit-clip-path: url('#body-shape');
+          clip-path: url('#body-shape');
+  overflow: hidden;
+  background: #bababa;
+  cursor: pointer;
+  transition: all .5s;
+}
+
+.body-highlight {
+  width: 110%;
+  height: 110%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #cfcfcf;
+  border-radius: var(--body-highlight-radius);
+  transform: translate(-65%, -63%);
+  transition: all .5s;
+}
+
+.shape {
+  position: absolute;
+  color: #333;
+  background: currentColor;
+  transform-style: preserve-3d;
+  transform:
+    translate(
+      calc(-15% + var(--cursor-x-1) * 30%),
+      calc(-15% + var(--cursor-y-1) * 30%)
+    )
+    rotateX(
+      calc(-15deg + var(--cursor-y-1) * 30deg)
+    )
+    rotateY(
+      calc(-15deg + var(--cursor-x-1) * 30deg)
+    );
+  transition:
+    top .5s,
+    left .5s,
+    width .5s,
+    height .5s,
+    border-radius .5s,
+    opacity .5s;
+}
+
+.right-eye {
+  top: var(--right-eye-top);
+  left: var(--right-eye-left);
+  width: var(--right-eye-width);
+  height: var(--right-eye-height);
+  border-radius: var(--right-eye-radius);
+}
+
+.left-eye {
+  top: var(--left-eye-top);
+  left: var(--left-eye-left);
+  width: var(--left-eye-width);
+  height: var(--left-eye-height);
+  border-radius: var(--left-eye-radius);
+}
+
+.nose {
+  top: var(--nose-top);
+  left: var(--nose-left);
+  width: var(--nose-width);
+  height: var(--nose-height);
+  opacity: var(--nose-opacity);
+  background: none;
+  border-bottom: 3px solid currentColor;
+  border-radius: var(--nose-radius);
+  transform:
+    translate(
+      calc(-30% + var(--cursor-x-1) * 60%),
+      calc(-30% + var(--cursor-y-1) * 60%)
+    )
+    rotateX(
+      calc(-30deg + var(--cursor-y-1) * 60deg)
+    )
+    rotateY(
+      calc(-30deg + var(--cursor-x-1) * 60deg)
+    );
+}
+
+.mouth {
+  top: var(--mouth-top);
+  left: var(--mouth-left);
+  width: var(--mouth-width);
+  height: var(--mouth-height);
+  border-radius: var(--mouth-radius);
+}
+
+@-webkit-keyframes tiktiktik {
+  3% { transform: rotate(calc(var(--head-rotation) / 1.75)) }
+  4% { transform: rotate(calc(var(--head-rotation) / -0.5)) }
+  5% { transform: rotate(calc(var(--head-rotation) / 2.25)) }
+  6% { transform: rotate(calc(var(--head-rotation) / -0.75)) }
+  8% { transform: rotate(calc(var(--head-rotation) / 3)) }
+  10% { transform: rotate(calc(var(--head-rotation) / -1)) }
+  12% { transform: rotate(calc(var(--head-rotation) / 3.75)) }
+  14% { transform: rotate(calc(var(--head-rotation) / -1.5)) }
+  16% { transform: rotate(calc(var(--head-rotation) / 5)) }
+  19% { transform: rotate(calc(var(--head-rotation) / -3)) }
+  22% { transform: rotate(calc(var(--head-rotation) / 6)) }
+  26% { transform: rotate(calc(var(--head-rotation) / -6)) }
+  30% { transform: rotate(calc(var(--head-rotation) / 7.5)) }
+  34% { transform: rotate(calc(var(--head-rotation) / -12)) }
+  39% { transform: rotate(calc(var(--head-rotation) / 9)) }
+  44% { transform: rotate(calc(var(--head-rotation) / -20)) }
+  50% { transform: rotate(calc(var(--head-rotation) / 11)) }
+  56% { transform: rotate(calc(var(--head-rotation) / -30)) }
+  63% { transform: rotate(calc(var(--head-rotation) / 13.5)) }
+  70% { transform: rotate(calc(var(--head-rotation) / -45)) }
+  78% { transform: rotate(calc(var(--head-rotation) / 17)) }
+  86% { transform: rotate(calc(var(--head-rotation) / -60)) }
+  93% { transform: rotate(calc(var(--head-rotation) / 20)) }
+  100% { transform: rotate(calc(var(--head-rotation) / -90)) }
+}
+
+@keyframes tiktiktik {
+  3% { transform: rotate(calc(var(--head-rotation) / 1.75)) }
+  4% { transform: rotate(calc(var(--head-rotation) / -0.5)) }
+  5% { transform: rotate(calc(var(--head-rotation) / 2.25)) }
+  6% { transform: rotate(calc(var(--head-rotation) / -0.75)) }
+  8% { transform: rotate(calc(var(--head-rotation) / 3)) }
+  10% { transform: rotate(calc(var(--head-rotation) / -1)) }
+  12% { transform: rotate(calc(var(--head-rotation) / 3.75)) }
+  14% { transform: rotate(calc(var(--head-rotation) / -1.5)) }
+  16% { transform: rotate(calc(var(--head-rotation) / 5)) }
+  19% { transform: rotate(calc(var(--head-rotation) / -3)) }
+  22% { transform: rotate(calc(var(--head-rotation) / 6)) }
+  26% { transform: rotate(calc(var(--head-rotation) / -6)) }
+  30% { transform: rotate(calc(var(--head-rotation) / 7.5)) }
+  34% { transform: rotate(calc(var(--head-rotation) / -12)) }
+  39% { transform: rotate(calc(var(--head-rotation) / 9)) }
+  44% { transform: rotate(calc(var(--head-rotation) / -20)) }
+  50% { transform: rotate(calc(var(--head-rotation) / 11)) }
+  56% { transform: rotate(calc(var(--head-rotation) / -30)) }
+  63% { transform: rotate(calc(var(--head-rotation) / 13.5)) }
+  70% { transform: rotate(calc(var(--head-rotation) / -45)) }
+  78% { transform: rotate(calc(var(--head-rotation) / 17)) }
+  86% { transform: rotate(calc(var(--head-rotation) / -60)) }
+  93% { transform: rotate(calc(var(--head-rotation) / 20)) }
+  100% { transform: rotate(calc(var(--head-rotation) / -90)) }
+}
